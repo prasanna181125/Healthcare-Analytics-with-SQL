@@ -169,14 +169,13 @@ where diagnosis = 'Insulin';
 --Task: Calculate the average duration (in days) for which medications are prescribed for each diagnosis.
 
 select 
-	appointments.patient_id,
-	appointments.appointment_date,
-	diagnoses.diagnosis_date,
-	diagnoses.diagnosis,
-	diagnoses.diagnosis_date - appointments.appointment_date AS diff_date from appointments
-full join diagnoses
-on appointments.patient_id=diagnoses.patient_id 
-where appointments.patient_id is not null
+	medication_id,
+	diagnosis_id,
+	medication_name,
+	dosage,
+	end_date-start_date  as diagnose_duration
+from medications
+where end_date-start_date>0;
 
 --Complex Joins and Aggregation
 --Task: Write a query to identify the doctor who has attended the most unique patients.
@@ -190,7 +189,8 @@ join doctors
 on appointments.doctor_id=doctors.doctor_id
 join patients
 on appointments.patient_id=patients.patient_id
-GROUP BY patients.name, appointments.doctor_id, doctors.name, doctors.specialization, appointments.patient_id)
+group by
+	patients.name, appointments.doctor_id, doctors.name, doctors.specialization, appointments.patient_id )
 select 
 	data.doctor_id, data.Doctor_name,
 	data.doctor_specilization ,
@@ -200,4 +200,3 @@ from
 group by
 	data.doctor_id, data.doctor_name,
 	data.doctor_specilization ;
- 
